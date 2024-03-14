@@ -4,7 +4,12 @@
     <title>BUYSELL</title>
 </head>
 <body>
-<h1>BUYSELL</h1><hr>
+<h1>BUYSELL | <a href="/login">Войти</a> </h1><hr>
+<form action="/logout" method="post">
+    <input type="hidden" name="_csrf" value="${_csrf.token}">
+    <input type="submit" value="Выйти">
+
+</form>
 <h4>Товары со всей России</h4>
 <form action="/" method="get">
     Поиск по названию объявления: <input type="text" name="title"><br>
@@ -19,7 +24,7 @@
 </#list>
 <hr>
 <h3>Создать новый товар</h3>
-<form action="/product/create" method="post">
+<form action="/product/create" method="post" enctype="multipart/form-data">
     Название объявления: <input type="text" name="title"/><br><br>
     Описание объявления: <input type="text" name="description"/><br><br>
     Цена: <input type="number" name="price"/><br><br>
