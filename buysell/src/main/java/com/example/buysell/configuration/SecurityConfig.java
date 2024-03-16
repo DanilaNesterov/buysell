@@ -16,14 +16,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
     private final CustomUserDetailsService userDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/product/**", "/images/**", "/registration")
+                .antMatchers("/", "/product/**", "/images/**", "/registration", "/user/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()

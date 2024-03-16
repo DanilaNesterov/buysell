@@ -20,23 +20,16 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
-
     @Column(name = "title")
     private String title;
-
     @Column(name = "description", columnDefinition = "text")
     private String description;
-
     @Column(name = "price")
     private int price;
-
     @Column(name = "city")
     private String city;
-
-
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product") // cascade - при удалении товара удаляем все фотографии
-    // mappedBy - товар свящанный с фотографией будет записан в foreign key таблицы images
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+            mappedBy = "product")
     private List<Image> images = new ArrayList<>();
     private Long previewImageId;
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
@@ -44,15 +37,13 @@ public class Product {
     private User user;
     private LocalDateTime dateOfCreated;
 
-
-    // Метод инициализации бина
     @PrePersist
     private void init() {
         dateOfCreated = LocalDateTime.now();
     }
 
 
-    public void addImageToProduct(Image image){
+    public void addImageToProduct(Image image) {
         image.setProduct(this);
         images.add(image);
     }

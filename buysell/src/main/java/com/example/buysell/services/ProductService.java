@@ -17,16 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class ProductService {
-
-
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
 
-
-    public List<Product> listProduct(String title) {
+    public List<Product> listProducts(String title) {
         if (title != null) return productRepository.findByTitle(title);
         return productRepository.findAll();
     }
@@ -49,7 +46,6 @@ public class ProductService {
             image3 = toImageEntity(file3);
             product.addImageToProduct(image3);
         }
-
         log.info("Saving new Product. Title: {}; Author email: {}", product.getTitle(), product.getUser().getEmail());
         Product productFromDb = productRepository.save(product);
         productFromDb.setPreviewImageId(productFromDb.getImages().get(0).getId());
@@ -61,7 +57,6 @@ public class ProductService {
         return userRepository.findByEmail(principal.getName());
     }
 
-    // Преобразование файла в изображение
     private Image toImageEntity(MultipartFile file) throws IOException {
         Image image = new Image();
         image.setName(file.getName());

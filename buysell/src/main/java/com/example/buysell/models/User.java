@@ -13,50 +13,44 @@ import java.util.*;
 @Entity
 @Table(name = "users")
 @Data
-
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // уникальный id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
     @Column(name = "email", unique = true)
     private String email;
-
-    @Column(name = "phoneNumber")
+    @Column(name = "phone_number")
     private String phoneNumber;
-
     @Column(name = "name")
     private String name;
-
     @Column(name = "active")
-    private boolean active; // является ли пользователь активным(подтверждение аккаунта)
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) // если удаляем пользователя, удаляем товар
-    @JoinColumn(name = "image_id") // столбец ссылается на этот ключ
+    private boolean active;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "image_id")
     private Image avatar;
-
     @Column(name = "password", length = 1000)
     private String password;
-
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER) // role - элемент коллекции
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"))
-    // создаем таблицу в которой будет хранится id и роль пользователя
-    @Enumerated(EnumType.STRING) // enum пребразуем в String
+    @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private List<Product> products = new ArrayList<>();
     private LocalDateTime dateOfCreated;
+
 
     @PrePersist
     private void init() {
         dateOfCreated = LocalDateTime.now();
     }
 
+    // security
 
-    //security
+    public boolean isAdmin() {
+        return roles.contains(Role.ROLE_ADMIN);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
